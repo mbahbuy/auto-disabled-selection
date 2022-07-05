@@ -4,15 +4,15 @@ $conn = new mysqli( "localhost", "root", "", "latihan" );
 $date = date( 'Y-m-d' );
 if( isset($_GET['action'] ) )
 {
-    if( $_GET['action'] == 'check' )
+    if( $_GET['action'] == 'check' )// pengecekan pilihan waktu dari DB { ada/tidak }
     {
         if( !empty($_GET['target'] ))
         {
             // var_dump( "SELECT book_time FROM book WHERE ( tanggal LIKE '%$date%' AND produk_id = '$_GET[target]' )" );die;
-            $hasil = $conn->query( "SELECT book_time FROM book WHERE ( tanggal LIKE '%$date%' AND produk_id = '$_GET[target]' )" );
-            if( $hasil->num_rows > 0 )
+            $checking = $conn->query( "SELECT book_time FROM book WHERE ( tanggal LIKE '%$date%' AND produk_id = '$_GET[target]' )" );
+            if( $checking->num_rows > 0 )
             {
-                while( $p = $hasil->fetch_assoc() )
+                while( $p = $checking->fetch_assoc() )
                 {
                     $check['waktu'] = $p['book_time'];
                     $checked[] = $check;
@@ -24,7 +24,7 @@ if( isset($_GET['action'] ) )
         } else {
             echo json_encode( [ "results" => null ] );
         }
-    } elseif( $_GET['action'] == 'input' )
+    } elseif( $_GET['action'] == 'input' )// peng-inputan data dari frondEnd ke dalam DB
     {
         $inputan = file_get_contents( "php://input" );
         $data = json_decode( $inputan, true );
@@ -51,7 +51,7 @@ if( isset($_GET['action'] ) )
     }
 }
 
-function fasilitas( $xxx )
+function fasilitas( $xxx )// fungsi untuk notifikasi fasilitas yang dipilih
 {
     $name = [
     "1" =>"Gedung Serba Guna",
@@ -69,7 +69,7 @@ function fasilitas( $xxx )
     ];
     return $name[ $xxx ];
 }
-function waktu( $ppp )
+function waktu( $ppp )// fungsi untuk notifikasi waktu yang dipilih
 {
     $time = [
         "1" => "08:00 - 11:30",

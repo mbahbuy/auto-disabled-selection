@@ -13,6 +13,7 @@
 
         <h1 class="mt-4 mb-4">Pilih Penyewaan</h1>
     
+        <!-- pemilihan fasilitas yang akan di sewa -->
         <div class="input-group mb-3">
             <label class="input-group-text" for="fasilitasID">Fasilitas :</label>
             <select class="form-select" id="fasilitasID">
@@ -31,7 +32,8 @@
                 <option value="12" data-target="ID12">Rumah Prasmanan</option>
             </select>
         </div>
-    
+        
+        <!-- Tempat pemilihan waktu penyewaan yang tersedia -->
         <div class="input-group mb-3">
             <label class="input-group-text" for="waktuFasilitas">Waktu :</label>
             <select class="form-select" id="waktuFasilitas">
@@ -46,37 +48,12 @@
         <button type="button" class="btn btn-primary mt-3 col-sm-3" id="book">Book</button>
     
     </div>
-<div id="notif"></div>
+<div id="notif"></div><!-- tempat notifikasi -->
+
 <script src="js/bootstrap.js"></script>
 <script>
-function inputWaktu( dataTarget = [] )
-{
-    if( dataTarget[0] == 1 )
-    {
-        disabled1 = "disabled";
-    } else {
-        disabled1 = "";
-    }
-    if( dataTarget[1] == 2 )
-    {
-        disabled2 = "disabled";
-    } else {
-        disabled2 = "";
-    }
-    if( dataTarget[2] == 3 )
-    {
-        disabled3 = "disabled";
-    } else {
-        disabled3 = "";
-    }
-    var tempatTime = document.getElementById('waktuPlace');
-    var div = document.createElement('div');
-    div.className = "input-group mb-3";
-    div.innerHTML = "<label class='input-group-text' for='waktuFasilitas'>Waktu :</label><select class='form-select' id='waktuFasilitas'><option selected>-</option><option value='1' data-target='waktu1' "+ disabled1 +" >08:00 - 11:30</option><option value='2' data-target='waktu2' "+ disabled2 +">12:30 - 16:00</option><option value='3' data-target='waktu3' "+ disabled3 +">17:00 - 21:00</option></select>";
-    tempatTime.append(div);
-};
 
-function notif( alert = 'danger', texts = '' )
+function notif( alert = 'danger', texts = '' ) // fungsi notifikasi
 {
     var notifPlace = document.getElementById('notif');
     var text = document.createElement('div');
@@ -85,7 +62,7 @@ function notif( alert = 'danger', texts = '' )
     notifPlace.appendChild(text);
 };
 
-function checked( target )
+function checked( target )// jika sudah ada pemesanan di DB maka otomatis data waktu pembelian mendapat attr disabled
 {
     var xhtml = new XMLHttpRequest();
     xhtml.onreadystatechange = function()
@@ -96,10 +73,10 @@ function checked( target )
             // console.log( dataJson.results );
             if( dataJson.results !== null )
             {
-                // inputWaktu( dataJson.results.waktu, );
-            //     // console.log( dataJson.results[0].waktu );
+                // console.log( dataJson.results[0].waktu );
                 for( let i = 0; i < dataJson.results.length; i++ )
                 {
+
                     // let tempat = document.getElementById('notif');
                     // let tagP = document.createElement('p');
                     // tagP.innerHTML = dataJson.results[i].waktu;
@@ -116,13 +93,13 @@ function checked( target )
     xhtml.send();
 }
 // inputWaktu();
-document.getElementById( 'fasilitasID' ).onclick = function()
+document.getElementById( 'fasilitasID' ).onclick = function() // pengecekan pilihan menu untuk mendapatakan data waktu penyewaan yang tersedia
 {
     checked( this.value );
     // console.log( this.value );
 };
 
-document.getElementById( 'book' ).onclick = function()
+document.getElementById( 'book' ).onclick = function()// pemasukan inputan penyewaan ke dalam DB
 {
     var data = {
         produkID : document.getElementById( 'fasilitasID' ).value,
